@@ -1,24 +1,25 @@
-# This is a sample Python script.
+import requests
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+page_size = 25
 
+response = requests.get(
+    f'https://etmarketsapis.indiatimes.com/ET_Stats/gainers?pagesize={page_size}&exchange=nse&pageno=1&sort=intraday&sortby=percentchange&sortorder=desc&duration=1d')
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+x = response.json()
+y = x["searchresult"]
+print(len(y))
+ticker_details = []
+ticker_name = []
+# for i in y:
+i = 0
+while i < page_size:
+    ticker_details.append(y[i])
+    i += 1
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
-# hello how are you
-
-
-def a(name):
-    print(name)
-
-
-a('hai how are you')
+# Second loop Isolate values needed (changepct , price , volume , week high , )
+i = 0
+while i < page_size:
+    x = dict(ticker_details[i])
+    y = x["ticker"]
+    print(i, ":", y)
+    i += 1
