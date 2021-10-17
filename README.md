@@ -13,3 +13,11 @@
 -- All other values in sheets was also added 
 -- project complete 
 -- require code clean up and updates
+
+# 16/10/2021
+-- Added time based update (code refreshes automatically)
+-- Entire main.py was made into a def main()
+-- 3 variables are now being accepted as user inputs (page_size , min_price , max_price)(This was changed back)
+-- Capital letters in functions names were removed (snake_case or smaller case used)
+-- error handling using try and except (network error ,network reset error )
+-- added more print statements for more code clarity during runtime (url fetch , prep data , upload )
