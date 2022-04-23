@@ -1,10 +1,11 @@
 import requests
 import sheets_auth
 import time
+from pprint import pprint
 
 # variables for the url
-page_size = 50
-min_price = 200
+page_size = 2
+min_price = 100
 max_price = 3000
 
 print(f'page_size = {page_size},min_price = {min_price},max_price = {max_price} \n ')
@@ -18,6 +19,7 @@ def main():
         f'{max_price}&pricerange=pricerange3')
 
     x = response.json()
+    pprint(x)
     y = x["searchresult"]
     print('2.url fetch complete')
 
@@ -63,6 +65,8 @@ def main():
 
     sheets_auth.single_range_write(values)
 
+  
+
 
 # one minute delay (0 seconds delay code execution delay 23 seconds)
 # Handle internet connection error
@@ -74,7 +78,7 @@ while Flag == 0:
         while True:
             main()
             Flag = 1
-            time.sleep(0)
+            time.sleep(30)
     except requests.ConnectionError:
         print("--server connection failed--")
         Flag = 0
