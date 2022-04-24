@@ -1,0 +1,8 @@
+--Thing to be done in the code will be shown here
+
+25/4/2022
+
+-- volume should be fixed 
+-- average volume should be added 
+-- sort everything in a way that no extract sorting will be necessary from sheets (that is sort using relat
+ive volume etc )
