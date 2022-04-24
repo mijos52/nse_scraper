@@ -21,3 +21,8 @@
 -- Capital letters in functions names were removed (snake_case or smaller case used)
 -- error handling using try and except (network error ,network reset error )
 -- added more print statements for more code clarity during runtime (url fetch , prep data , upload )
+
+# 23/4/2021
+#TODO
+-- get all nifty stocks 
+-- make android executable script
