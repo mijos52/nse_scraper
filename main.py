@@ -3,9 +3,9 @@ import sheets_auth
 import time
 
 # variables for the url
-page_size = 50
-min_price = 200
-max_price = 3000
+page_size = 75
+min_price = 100
+max_price = 5000
 
 print(f'page_size = {page_size},min_price = {min_price},max_price = {max_price} \n ')
 
