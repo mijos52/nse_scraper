@@ -3,9 +3,9 @@ import sheets_auth
 import time
 
 # variables for the url
-page_size = 75
+page_size = 50
 min_price = 100
-max_price = 5000
+max_price = 500
 
 print(f'page_size = {page_size},min_price = {min_price},max_price = {max_price} \n ')
 
@@ -13,9 +13,10 @@ print(f'page_size = {page_size},min_price = {min_price},max_price = {max_price} 
 def main():
     print('1.fetching data')
     response = requests.get(
-        f'https://etmarketsapis.indiatimes.com/ET_Stats/gainers?pagesize={page_size}&exchange=nse&pageno=1'
-        f'&sort=intraday&sortby=percentchange&sortorder=desc&duration=1d&minprice={min_price}&maxprice='
-        f'{max_price}&pricerange=pricerange3')
+        f'https://etmarketsapis.indiatimes.com/ET_Stats/volumeshocker?'
+f'pagesize={page_size}&exchange=50&pageno=1&service=volumeshocker&sortby'
+f'volumepercentagechange&sortorder=desc&avgvolumeover=DAY_15&pricerange=pricerange2&minprice={min_price}&maxprice={max_price}')
+
 
     x = response.json()
     y = x["searchresult"]
@@ -31,22 +32,22 @@ def main():
     # Second loop Isolate values needed (changepct , price , volume , week high , sector )
     i = 0
     ticker_name = []
+    ticker_ltp = []
+    ticker_change = []
     ticker_volume = []
-    ticker_current = []
-    ticker_pct = []
-    ticker_sector = []
+    ticker_volumeavg = []
     while i < page_size:
         x = dict(ticker_details[i])
-        y = "NSE:" + x["ticker"]
-        a = x["percentChange"]
-        b = x["volume"]
-        c = x["current"]
-        d = x["sectorName"]
+        y = "NSE:" + x["companyName"]
+        a = x["current"]
+        b = x["percentChange"]
+        c = x["volume"]
+        d = x["averageVolume"]
         ticker_name.append(y)
-        ticker_volume.append(b)
-        ticker_pct.append(a)
-        ticker_current.append(c)
-        ticker_sector.append(d)
+        ticker_ltp.append(b)
+        ticker_change.append(a)
+        ticker_volume.append(c)
+        ticker_volumeavg.append(d)
         i += 1
 
     # Make values in the format(nested list) that can be passed to sheets api as (values)
@@ -54,9 +55,8 @@ def main():
     values = []
 
     while i < page_size:
-        ticker_quote = [ticker_name[i], ticker_sector[i], ticker_current[i], ticker_pct[i], None, None, None, None,
-                        None,
-                        ticker_volume[i]]
+        ticker_quote = [ticker_name[i], ticker_change[i], ticker_ltp[i], ticker_volume[i], ticker_volumeavg[i]
+                        ]
         values.append(ticker_quote)
         i += 1
     print('3.value prepared Handover to sheets api')
@@ -74,7 +74,7 @@ while Flag == 0:
         while True:
             main()
             Flag = 1
-            time.sleep(0)
+            time.sleep(30)
     except requests.ConnectionError:
         print("--server connection failed--")
         Flag = 0
