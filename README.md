@@ -26,3 +26,10 @@
 #TODO
 -- get all nifty stocks 
 -- make android executable script
+
+# 25/4/2022
+
+-- significant changes were mad
+-- design was changed
+-- api was changed 
+-- variable names were changed
