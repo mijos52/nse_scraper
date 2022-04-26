@@ -33,3 +33,11 @@ def single_range_write(values):
                                                     body=body).execute()
     print('Success! {0} cells updated.'.format(result.get('updatedCells')))
     print(datetime.now(), '\n')
+
+# def delete_data():
+ 
+#     request = service.spreadsheets().values().clear(spreadsheetId=sheet_ID, range=sheet_range,body=clear)
+#     response = request.execute()
+#     print("cleared data")
+#     print(response)
+

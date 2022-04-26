@@ -33,3 +33,10 @@
 -- design was changed
 -- api was changed 
 -- variable names were changed
+
+# 26/4/20222
+
+-- variable (item_no) was added to remove error
+-- page size is calculated from response url list item count
+-- added new def delete_data to in sheets_auth for clearning sheets data
+-- new nifty 500 filter added 
