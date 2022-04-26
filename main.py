@@ -2,10 +2,12 @@ import requests
 import sheets_auth
 import time
 
+
+
 # variables for the url
 page_size = 50
 min_price = 100
-max_price = 500
+max_price = 5000
 
 print(f'page_size = {page_size},min_price = {min_price},max_price = {max_price} \n ')
 
@@ -15,17 +17,19 @@ def main():
     response = requests.get(
         f'https://etmarketsapis.indiatimes.com/ET_Stats/volumeshocker?'
 f'pagesize={page_size}&exchange=50&pageno=1&service=volumeshocker&sortby'
-f'volumepercentagechange&sortorder=desc&avgvolumeover=DAY_15&pricerange=pricerange2&minprice={min_price}&maxprice={max_price}')
+f'volumepercentagechange&sortorder=desc&avgvolumeover=DAY_15&pricerange=pricerange2&minprice={min_price}&maxprice={max_price}&index=2371')
 
 
     x = response.json()
+  
     y = x["searchresult"]
+    items_no = len(y)
     print('2.url fetch complete')
 
     # TODO : three while loops are used for sorting data (reduce the number of loops)
     ticker_details = []
     i = 0
-    while i < page_size:
+    while i < items_no:
         ticker_details.append(y[i])
         i += 1
 
@@ -36,9 +40,9 @@ f'volumepercentagechange&sortorder=desc&avgvolumeover=DAY_15&pricerange=priceran
     ticker_change = []
     ticker_volume = []
     ticker_volumeavg = []
-    while i < page_size:
+    while i < items_no:
         x = dict(ticker_details[i])
-        y = "NSE:" + x["companyName"]
+        y = x["companyName"]
         a = x["current"]
         b = x["percentChange"]
         c = x["volume"]
@@ -54,13 +58,14 @@ f'volumepercentagechange&sortorder=desc&avgvolumeover=DAY_15&pricerange=priceran
     i = 0
     values = []
 
-    while i < page_size:
+    while i < items_no:
         ticker_quote = [ticker_name[i], ticker_change[i], ticker_ltp[i], ticker_volume[i], ticker_volumeavg[i]
                         ]
         values.append(ticker_quote)
         i += 1
     print('3.value prepared Handover to sheets api')
 
+    # sheets_auth.delete_data()
     sheets_auth.single_range_write(values)
 
 
