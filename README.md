@@ -40,3 +40,7 @@
 -- page size is calculated from response url list item count
 -- added new def delete_data to in sheets_auth for clearning sheets data
 -- new nifty 500 filter added 
+
+# 29/4/200
+-- premarket scanner form nse india website added
+-- new pre_market.py file
