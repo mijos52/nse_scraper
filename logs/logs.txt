@@ -1,0 +1,15 @@
+INFO:root:Making API call 
+INFO:root:Preparing data
+INFO:root:writing data to google sheets
+INFO:root:Making API call 
+INFO:root:Preparing data
+INFO:root:writing data to google sheets
+INFO:root:Making API call 
+INFO:root:Preparing data
+INFO:root:writing data to google sheets
+INFO:root:Making API call 
+INFO:root:Preparing data
+INFO:root:writing data to google sheets
+INFO:root:Making API call 
+INFO:root:Preparing data
+INFO:root:writing data to google sheets

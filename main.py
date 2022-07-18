@@ -1,91 +1,56 @@
 import requests
 import sheets_auth
 import time
+import config
+import logging
 
+def log_config()-> None:
+    logging.basicConfig(filename=config.LOG_FILE,level=logging.INFO)
 
+def create_log(message:str) -> None:
+    logging.info(message)
 
-# variables for the url
-page_size = 50
-min_price = 100
-max_price = 5000
+def make_api_call() -> list[str]:
+    create_log('Making API call ')
+    response = requests.get(config.API_URL)
+    json_response = response.json()
+    return json_response["searchresult"]
+    
+def prep_data(data:list[str]) -> list[str]:
+    values:list[str] = []
+    create_log('Preparing data')
 
-print(f'page_size = {page_size},min_price = {min_price},max_price = {max_price} \n ')
+    for i in data:
+      ticker_quote = [i["companyName"], i["current"], i["percentChange"], i["volume"], i["averageVolume"]]
+      values.append(ticker_quote)
+    return values
 
-
-def main():
-    print('1.fetching data')
-    response = requests.get(
-        f'https://etmarketsapis.indiatimes.com/ET_Stats/volumeshocker?'
-f'pagesize={page_size}&exchange=50&pageno=1&service=volumeshocker&sortby'
-f'volumepercentagechange&sortorder=desc&avgvolumeover=DAY_15&pricerange=pricerange2&minprice={min_price}&maxprice={max_price}&index=2371')
-
-
-    x = response.json()
-  
-    y = x["searchresult"]
-    items_no = len(y)
-    print('2.url fetch complete')
-
-    # TODO : three while loops are used for sorting data (reduce the number of loops)
-    ticker_details = []
-    i = 0
-    while i < items_no:
-        ticker_details.append(y[i])
-        i += 1
-
-    # Second loop Isolate values needed (changepct , price , volume , week high , sector )
-    i = 0
-    ticker_name = []
-    ticker_ltp = []
-    ticker_change = []
-    ticker_volume = []
-    ticker_volumeavg = []
-    while i < items_no:
-        x = dict(ticker_details[i])
-        y = x["companyName"]
-        a = x["current"]
-        b = x["percentChange"]
-        c = x["volume"]
-        d = x["averageVolume"]
-        ticker_name.append(y)
-        ticker_ltp.append(b)
-        ticker_change.append(a)
-        ticker_volume.append(c)
-        ticker_volumeavg.append(d)
-        i += 1
-
-    # Make values in the format(nested list) that can be passed to sheets api as (values)
-    i = 0
-    values = []
-
-    while i < items_no:
-        ticker_quote = [ticker_name[i], ticker_change[i], ticker_ltp[i], ticker_volume[i], ticker_volumeavg[i]
-                        ]
-        values.append(ticker_quote)
-        i += 1
-    print('3.value prepared Handover to sheets api')
-
-    # sheets_auth.delete_data()
-    sheets_auth.single_range_write(values)
-
-
-# one minute delay (0 seconds delay code execution delay 23 seconds)
-# Handle internet connection error
-
+def write_to_google_sheets(values:list[str])-> None:
+    create_log('writing data to google sheets')
+    sheets_auth.volume_shockers_data(values)
+    
+def main_loop() -> None:
 # TODO: Improve this code
-Flag = 0
-while Flag == 0:
-    try:
-        while True:
-            main()
-            Flag = 1
-            time.sleep(30)
-    except requests.ConnectionError:
-        print("--server connection failed--")
-        Flag = 0
-        time.sleep(5)
+    Flag = 0
+    while Flag == 0:
+        try:
+            while True:
+                log_config()
+                data = make_api_call()
+                sheets_data = prep_data(data=data)
+                write_to_google_sheets(values = sheets_data)
+                Flag = 1
+                time.sleep(30)
+        except requests.ConnectionError:
+            print("--server connection failed--")
+            Flag = 0
+            time.sleep(5)
 
-    except ConnectionResetError:
-        print("--Network connection was shut down--")
-        Flag = 0
-        time.sleep(5)
+        except ConnectionResetError:
+            print("--Network connection was shut down--")
+            Flag = 0
+            time.sleep(5)
+
+
+main_loop()
+
