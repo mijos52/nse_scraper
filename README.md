@@ -13,5 +13,8 @@
 - Uses economictimes API for data
 
 ## Screenshots
-
+# Google Sheets
 ![first_image](https://github.com/mijos52/nse_scraper/blob/19bd86f277091d24a06f2746fab19f2aa2515889/Images/sheets%20scanner.PNG?raw=true)
+
+# Console output
+![second_image](https://github.com/mijos52/nse_scraper/blob/master/Images/sheets_scanner_terminal.PNG?raw=true)
