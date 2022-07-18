@@ -11,3 +11,7 @@
 - Live Scanner (Realtime updates)
 - Completely free forever
 - Uses economictimes API for data
+
+## Screenshots
+
+![first_image](https://github.com/mijos52/nse_scraper/blob/19bd86f277091d24a06f2746fab19f2aa2515889/Images/sheets%20scanner.PNG?raw=true)
